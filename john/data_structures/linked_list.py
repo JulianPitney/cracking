@@ -4,7 +4,7 @@ class Node:
     self.value = value
     self.next = None
 
-  def appendNext(self, next):
+  def setNext(self, next):
     self.next = next
     return next
   
@@ -14,7 +14,6 @@ class LinkedList:
     self.last = last
 
   def print(self):
-    
     current = head
     while (current != None):
       print(current.value)
@@ -28,7 +27,7 @@ for i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]:
     head = Node(i)
     last = head
   else:
-    last = last.appendNext(Node(i))
+    last = last.setNext(Node(i))
 
 
 list = LinkedList(head, last)
