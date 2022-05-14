@@ -53,16 +53,28 @@ class SinglyLinkedList:
             else:
                 n = n.next
 
+    # return nth last element
+    def get_nth_last_element(self, nth):
+
+        list_len = 1
+        n = self.head
+        while n.next is not None:
+            n = n.next
+            list_len += 1
+
+        n = self.head
+        for i in range(0, list_len - nth):
+            n = n.next
+
+        return n.data
+
 
 head = Node(10)
 l1 = SinglyLinkedList(head, None)
-for i in range(0, 100000):
+for i in range(0, 9):
     l1.append_to_tail(random.randint(0, 10))
-print(f"Duplicates List:")
 l1.print_list()
-l1.remove_dups()
-print(f"Duplicates Removed:")
-l1.print_list()
+print(l1.get_nth_last_element(1))
 
 
 
