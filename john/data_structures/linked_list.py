@@ -34,13 +34,17 @@ class LinkedList:
     self.head = newNode
 
   def print(self):
+
+    concatString = ''
+
     current = self.head
     if (current == None):
       print('Empty List')
     else:
       while (current != None):
-        print(current.value)
+        concatString = concatString + str(current.value) + (',' if current.next != None else '')
         current = current.next
+      print(concatString)
 
   def removeNode(self, node):
     if (node == self.head):
@@ -113,6 +117,32 @@ class LinkedList:
       current = current.next
     return int(intStr)
 
+  # Thoughts:
+  # If we're maintaining a 'length' property,
+  # we could eliminate n/2 iterations across the board,
+  # by checking where we are in the list on each iteration and breakin
+  # at the middle.
+  def isPalindrome(self):
+
+
+    isPalindrome = True
+
+    currentFromEnd = self.last
+    currentFromStart = self.head
+
+    while currentFromStart != None:
+
+      if (currentFromStart.value != currentFromEnd.value):
+        isPalindrome = False
+        break
+
+      currentFromEnd = currentFromEnd.prev
+      currentFromStart = currentFromStart.next
+      
+    return isPalindrome
+
+
+
   @staticmethod
   def sum(listA, listB):
     intA = listA.toIntFromEnd()
@@ -141,7 +171,9 @@ class LinkedList:
       else:
         nLast = nLast.setNext(Node(i))
 
-    return LinkedList(nHead)
+    nList = LinkedList(nHead)
+    nList.last = nLast
+    return nList
     
 
 list = LinkedList.listFromArray([1, 2, 9, 3, 4, 5, 5, 6, 7, 8, 9, 10])
@@ -180,3 +212,21 @@ listB = LinkedList.listFromArray([5, 9, 2])
 
 newList = LinkedList.sum(listA, listB)
 newList.print()
+
+
+print('\nIs Palindrome?')
+nonPalindrome = LinkedList.listFromArray([1, 2, 3, 4, 5, 4, 3, 1])
+palindrome = LinkedList.listFromArray([1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1])
+funnyDrome = LinkedList.listFromArray([1, 2, 3, 3, 3, 3, 3, 3, 2, 1])
+
+print('\nChecking List:')
+nonPalindrome.print()
+print('List palindrome status: ' + str(nonPalindrome.isPalindrome()))
+
+print('\nChecking List:')
+palindrome.print()
+print('List palindrome status: ' + str(palindrome.isPalindrome()))
+
+print('\nChecking List:')
+funnyDrome.print()
+print('List palindrome status: ' + str(funnyDrome.isPalindrome()))
