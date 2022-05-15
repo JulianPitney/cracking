@@ -35,9 +35,12 @@ class LinkedList:
 
   def print(self):
     current = self.head
-    while (current != None):
-      print(current.value)
-      current = current.next
+    if (current == None):
+      print('Empty List')
+    else:
+      while (current != None):
+        print(current.value)
+        current = current.next
 
   def removeNode(self, node):
     if (node == self.head):
@@ -57,7 +60,7 @@ class LinkedList:
 
     # Without a buffer, we would need to loop N amount of times within N...O(N^2)
     current = self.head
-    while (current.next != None):
+    while (current != None):
       if (current.value in bufferSet):
         newNext = current.next
         self.removeNode(current)
@@ -73,7 +76,7 @@ class LinkedList:
     current = self.head
     i = 1
     shiftedN = current # Hang back by N
-    while (current.next != None):
+    while (current != None):
 
       #after we achieve the nTh lower bound...
       if (i > n):
@@ -89,13 +92,11 @@ class LinkedList:
     rightList = LinkedList(None)
 
     current = self.head
-    while (current.next != None):
+    while (current != None):
       if (current.value < xVal):
         leftList.appendToTail(current.value)
-      elif (current.value > xVal):
+      elif (current.value >= xVal):
         rightList.appendToTail(current.value)
-      elif (current.value == xVal):
-        rightList.appendToHead(current.value)
       current = current.next
 
     # Merge lists
@@ -103,25 +104,47 @@ class LinkedList:
     leftList.last = rightList.last
     self.head = leftList.head
     self.last = leftList.last
+
+  def toIntFromEnd(self):
+    intStr = ''
+    current = self.head
+    while (current != None):
+      intStr = str(current.value) + intStr
+      current = current.next
+    return int(intStr)
+
+  @staticmethod
+  def sum(listA, listB):
+    intA = listA.toIntFromEnd()
+    intB = listB.toIntFromEnd()
+
+    newList = LinkedList(None)
+
+    result = str(intA + intB)
+
+    print(f'A: {intA}, B: {intB}, Result: {result}')
+  
+    for i in range(1, len(result) + 1):
+      newList.appendToTail(int(result[-i]))
+    
+    return newList
+
+  @staticmethod
+  def listFromArray(arr):
+    nHead = None
+    nLast = None
+
+    for i in arr:
+      if (nHead == None):
+        nHead = Node(i)
+        nLast = nHead
+      else:
+        nLast = nLast.setNext(Node(i))
+
+    return LinkedList(nHead)
     
 
-
-        
-      
-
-
-head = None
-last = None
-
-for i in [1, 2, 9, 3, 4, 5, 5, 6, 7, 8, 9, 10]:
-  if (head == None):
-    head = Node(i)
-    last = head
-  else:
-    last = last.setNext(Node(i))
-
-
-list = LinkedList(head)
+list = LinkedList.listFromArray([1, 2, 9, 3, 4, 5, 5, 6, 7, 8, 9, 10])
 
 print('Raw')
 list.print()
@@ -140,5 +163,20 @@ nthToLastList = LinkedList(list.nthToLast(100))
 nthToLastList.print()
 
 print('\nPartition around 5')
-list.partition(5)
-list.print()
+
+lsitToPartition = LinkedList.listFromArray([3, 5, 8, 5, 10, 2, 1])
+lsitToPartition.partition(5)
+lsitToPartition.print()
+
+print('\nPartition around 5 (again)')
+
+lsitToPartition = LinkedList.listFromArray([1, 3, 2, 5, 4, 7, 6, 9, 8, 11, 10])
+lsitToPartition.partition(5)
+lsitToPartition.print()
+
+print('\n Sum Lists')
+listA = LinkedList.listFromArray([7, 1, 6])
+listB = LinkedList.listFromArray([5, 9, 2])
+
+newList = LinkedList.sum(listA, listB)
+newList.print()
