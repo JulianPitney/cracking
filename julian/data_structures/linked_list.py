@@ -68,13 +68,79 @@ class SinglyLinkedList:
 
         return n.data
 
+    def remove_middle_node(self, node):
+
+        if node is self.head or node is self.tail:
+            print("Node not in middle")
+            return 0
+
+        temp1 = node
+        temp2 = node.next
+        while temp2 is not None:
+
+            temp1.data = temp2.data
+
+            if temp2.next is None:
+                break
+            else:
+                temp1 = temp1.next
+                temp2 = temp2.next
+
+        temp1.next = None
+
+    def partition_around_x(self, x):
+
+        temp = self.head
+        less = []
+        greater = []
+
+        while temp is not None:
+
+            if temp.data < x:
+                less.append(temp)
+
+            elif temp.data >= x:
+                greater.append(temp)
+
+            temp = temp.next
+
+        less.extend(greater)
+
+        self.head = less[0]
+        temp = less[0]
+        for i in range(1, len(less)):
+            temp.next = less[i]
+            temp = less[i]
+        temp.next = None
+        self.tail = temp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 head = Node(10)
 l1 = SinglyLinkedList(head, None)
 for i in range(0, 9):
     l1.append_to_tail(random.randint(0, 10))
 l1.print_list()
-print(l1.get_nth_last_element(1))
+l1.partition_around_x(5)
+l1.print_list()
+
 
 
 
