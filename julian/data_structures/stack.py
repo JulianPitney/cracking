@@ -59,7 +59,7 @@ class ThreeInOne:
         self.arr[self.s3_top] = data
         return True
 
-
+'''
 test = ThreeInOne(3)
 print(test.arr)
 test.push_s1("eggs")
@@ -72,8 +72,94 @@ test.push_s3("lemons")
 print(test.arr)
 test.push_s3("flies")
 print(test.arr)
-
+'''
 
 # 3.2 - Stack Min
+
+class StackNode:
+
+    def __init__(self, data=None):
+        self.data = data
+        self.next = None
+        self.min_substack = self
+
+
+class Stack:
+
+    def __init__(self, top=None):
+        self.top = top
+        self.min_node = top
+
+    def print_stack(self):
+        temp = self.top
+
+        while temp is not None:
+            print(temp.data)
+            temp = temp.next
+
+    def push(self, data):
+
+        node = StackNode(data)
+
+        if self.top is None:
+            self.top = node
+            node.min_substack = node
+            self.min_node = node
+            return True
+
+        node.next = self.top
+
+        if self.top.min_substack.data > node.data:
+            node.min_substack = node
+            self.min_node = node
+        else:
+            node.min_substack = self.top.min_substack
+
+        self.top = node
+
+        return True
+
+    def pop(self):
+
+        if self.top is None:
+            return None
+
+        if self.top.next is None:
+            self.min_node = None
+            temp = self.top
+            self.top = None
+            return temp
+
+        if self.min_node == self.top:
+            self.min_node = self.top.next.min_substack
+
+        temp = self.top
+        self.top = self.top.next
+        return temp
+
+    def get_min(self):
+        return self.min_node
+
+
+node1 = StackNode(10)
+s1 = Stack(node1)
+s1.push(5)
+s1.push(11)
+s1.push(0)
+s1.push(900)
+s1.push(-1000)
+s1.pop()
+s1.pop()
+s1.pop()
+s1.pop()
+s1.pop()
+s1.pop()
+s1.print_stack()
+if s1.min_node is not None:
+    print(f'min: {s1.min_node.data}')
+
+
+
+
 
 
