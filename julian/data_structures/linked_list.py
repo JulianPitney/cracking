@@ -157,6 +157,34 @@ class SinglyLinkedList:
 
         return output_head, output_tail
 
+    def is_palindrome(self):
+
+        temp = self.head
+        elements = []
+        while temp is not None:
+            elements.append(temp.data)
+            temp = temp.next
+
+        return elements == elements[::-1]
+
+    @staticmethod
+    def intersection(list1, list2):
+
+        l1_ids = set()
+
+        while list1 is not None:
+            l1_ids.add(id(list1))
+            list1 = list1.next
+
+        while list2 is not None:
+            if id(list2) in l1_ids:
+                return id(list2)
+            list2 = list2.next
+
+        return False
+
+    def detect_loop(self):
+        pass
 
 
 
@@ -181,8 +209,33 @@ l3.tail = l3_tail
 print("summed list")
 l3.print_list()
 
+head4 = Node(3)
+l4 = SinglyLinkedList(head4, None)
+l4.append_to_tail(1)
+l4.append_to_tail(1)
+l4.append_to_tail(4)
+l4.append_to_tail(3)
+print(l4.is_palindrome())
 
 
+shared_node = Node("c")
+
+l5_head = Node(10)
+l5n1 = Node(-5)
+l5n2 = Node(0)
+l5_head.next = l5n1
+l5n1.next = l5n2
+l5n2.next = shared_node
+
+l6_head = Node(11)
+l6n1 = Node(15)
+l6n2 = Node(-4)
+l6_head.next = l6n1
+l6n1.next = shared_node
+shared_node.next = l6n2
+
+
+print(SinglyLinkedList.intersection(l5_head, l6_head))
 
 
 
