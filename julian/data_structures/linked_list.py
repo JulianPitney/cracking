@@ -184,8 +184,17 @@ class SinglyLinkedList:
         return False
 
     def detect_loop(self):
-        pass
 
+        temp = self.head
+        node_addrs = set()
+
+        while temp is not None:
+            node_addr = id(temp)
+            if node_addr in node_addrs:
+                return node_addr
+
+            node_addrs.add(node_addr)
+            temp = temp.next
 
 
 head1 = Node(7)
@@ -218,6 +227,7 @@ l4.append_to_tail(3)
 print(l4.is_palindrome())
 
 
+# 2.7 - Intersection
 shared_node = Node("c")
 
 l5_head = Node(10)
@@ -233,11 +243,17 @@ l6n2 = Node(-4)
 l6_head.next = l6n1
 l6n1.next = shared_node
 shared_node.next = l6n2
-
-
 print(SinglyLinkedList.intersection(l5_head, l6_head))
 
+# 2.8 - Loop Detection
+l8_head = Node(10)
+print(id(l8_head))
+l8 = SinglyLinkedList(l8_head, None)
+for i in range(4):
+    l8.append_to_tail(i)
+l8.tail.next = l8_head
 
+print(l8.detect_loop())
 
 
 
