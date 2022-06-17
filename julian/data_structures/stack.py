@@ -159,6 +159,77 @@ if s1.min_node is not None:
     print(f'min: {s1.min_node.data}')
 
 
+# 3.3 - Stack of Plates
+
+class SetOfStacks:
+
+    def __init__(self, max_stack_size, init_node):
+        self.tops = [init_node]
+        self.max_stack_size = max_stack_size
+        self.current_stack_size = 1
+
+    def print_sos(self):
+
+        for i, n in reversed(list(enumerate(self.tops))):
+
+            print(f"Stack#{i}")
+            temp = n
+            while temp is not None:
+                print(temp.data)
+                temp = temp.next
+
+    def push(self, data):
+
+        node = StackNode(data)
+
+        if self.current_stack_size >= self.max_stack_size:
+            self.tops.append(node)
+            self.current_stack_size = 1
+        else:
+            node.next = self.tops[-1]
+            self.tops[-1] = node
+            self.current_stack_size += 1
+
+    def pop(self):
+
+        if self.tops:
+            node = self.tops[-1]
+            self.current_stack_size -= 1
+
+            if self.current_stack_size == 0:
+                self.tops.pop()
+                if self.tops:
+                    self.current_stack_size = self.max_stack_size
+            else:
+                self.tops[-1] = node.next
+
+            return node.data
+
+    def pop_at(self, index):
+        pass
+
+
+top = StackNode(11)
+sos = SetOfStacks(3, top)
+for i in range(0, 6):
+    sos.push(i)
+
+sos.print_sos()
+print("\n\n")
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.pop()
+sos.print_sos()
+
+
+
+
+
 
 
 
