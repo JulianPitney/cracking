@@ -140,6 +140,47 @@ class Stack:
     def get_min(self):
         return self.min_node
 
+    def sort(self):
+
+        temp_stack = Stack(self.pop())
+        temp_stack.top.next = None
+
+        # iterate over all nodes in source stack
+        while self.top is not None:
+
+            next_node = self.pop()
+            next_node.next = None
+
+            # check if we can just insert the new node immediately
+            if next_node.data <= temp_stack.top.data:
+                next_node.next = temp_stack.top
+                temp_stack.top = next_node
+                continue
+            elif next_node.data > temp_stack.top.data and temp_stack.top.next is None:
+                temp_stack.top.next = next_node
+                continue
+
+
+            # iterate over all nodes in dest stack
+            temp1_dest = temp_stack.top
+            temp2_dest = temp1_dest.next
+            while temp2_dest is not None:
+
+                # insert above
+                if next_node.data <= temp2_dest.data:
+                    temp1_dest.next = next_node
+                    next_node.next = temp2_dest
+                    break
+                # insert below if no more nodes
+                elif temp2_dest.next is None:
+                    temp2_dest.next = next_node
+                    break
+                else: # move down
+                    temp1_dest = temp1_dest.next
+                    temp2_dest = temp2_dest.next
+
+        self.top = temp_stack.top
+
 
 node1 = StackNode(10)
 s1 = Stack(node1)
@@ -148,15 +189,12 @@ s1.push(11)
 s1.push(0)
 s1.push(900)
 s1.push(-1000)
-s1.pop()
-s1.pop()
-s1.pop()
-s1.pop()
-s1.pop()
-s1.pop()
 s1.print_stack()
-if s1.min_node is not None:
-    print(f'min: {s1.min_node.data}')
+print("\n\n")
+s1.sort()
+s1.print_stack()
+
+exit(0)
 
 
 # 3.3 - Stack of Plates
@@ -207,6 +245,8 @@ class SetOfStacks:
 
     def pop_at(self, index):
         pass
+
+
 
 
 top = StackNode(11)
