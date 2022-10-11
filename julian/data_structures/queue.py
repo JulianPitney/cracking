@@ -126,7 +126,7 @@ class AnimalQueue:
             self.tail.prev.next = None
             self.tail = self.tail.prev
             return temp
-        
+
     # this is so ugly but whatever
     def dequeue_animal(self, animal_type):
 
