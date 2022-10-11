@@ -27,8 +27,13 @@ def gen_undirected_ternary_graph(size=10):
 
             # try a random node:
             random_node_index = randint(0, size - 1)
-            # if random node also isn't fully connected, form a connection.
-            if len(nodes[random_node_index].adjacent_nodes) < 3:
+            # if random node:
+            # 1. isn't fully connected
+            # 2. Isn't the same node we're trying to connect
+            # 3. Isn't already connected to the node we're trying to connect
+            # then form a connection.
+            if len(nodes[random_node_index].adjacent_nodes) < 3 and node is not nodes[random_node_index]\
+                    and nodes[random_node_index] not in node.adjacent_nodes:
                 node.adjacent_nodes.append(nodes[random_node_index])
                 nodes[random_node_index].adjacent_nodes.append(node)
 
