@@ -7,47 +7,55 @@ class Node:
 
         self.data = data
         self.adjacent_nodes = []
-        self.visited = False
 
-#TODO: The nodes can be connected to themselves and can make multiple connections to the same node.
-# this is not desired lol.
-def gen_undirected_ternary_graph(size=10):
+
+def gen_directed_graph(size=10):
 
     # gen some nodes
     nodes = []
 
-    for i in range(size):
+    for i in range(0, size):
         nodes.append(Node(randint(0, 100)))
 
-    # connect em all up
-    for node in nodes:
+    # make random connections between the nodes, following some constraints:
+    # 1. A node may not connect to itself
+    # 2. An edge connecting any given source and target node may only occur once.
 
-        # keep trying to hook node up if it isn't fully connected yet
-        while len(node.adjacent_nodes) < 3:
+    # gen connections for each node
+    connections = []
+    for i in range(0, size):
 
-            # try a random node:
-            random_node_index = randint(0, size - 1)
-            # if random node:
-            # 1. isn't fully connected
-            # 2. Isn't the same node we're trying to connect
-            # 3. Isn't already connected to the node we're trying to connect
-            # then form a connection.
-            if len(nodes[random_node_index].adjacent_nodes) < 3 and node is not nodes[random_node_index]\
-                    and nodes[random_node_index] not in node.adjacent_nodes:
-                node.adjacent_nodes.append(nodes[random_node_index])
-                nodes[random_node_index].adjacent_nodes.append(node)
+        num_connections = randint(1, 3)
+        x = 0
+        while x < num_connections:
+
+            connection = (i, randint(0, size - 1))
+            if connection == (i, i):
+                continue
+            elif connection in connections:
+                continue
+            else:
+                connections.append(connection)
+                x += 1
+
+    # form connections using generated connections list
+    for connection in connections:
+        source = nodes[connection[0]]
+        target = nodes[connection[1]]
+
+        source.adjacent_nodes.append(target)
 
     return nodes
 
 
-def print_undirected_ternary_graph(graph):
+nodes = gen_directed_graph()
 
-    for node in graph:
-        print(f"Node addr:{id(node)}")
-        print(id(node.adjacent_nodes[0]))
-        print(id(node.adjacent_nodes[1]))
-        print(id(node.adjacent_nodes[2]))
-        print("\n")
 
-graph = gen_undirected_ternary_graph()
-print_undirected_ternary_graph(graph)
+for i in range(0, 1000):
+    nodes = gen_directed_graph()
+
+#for node in nodes:
+#    print(f"Node: {id(node)}")
+#    for anode in node.adjacent_nodes:
+#        print(f"Adjacent Node: {id(anode)}")
+#    print("\n")
