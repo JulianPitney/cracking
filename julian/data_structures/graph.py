@@ -1,5 +1,5 @@
 from random import randint
-
+from queue import Queue
 
 class Node:
 
@@ -78,8 +78,32 @@ def dfs(root: Node, target: Node, visited_nodes: dict):
             visited_nodes[node] = True
             if dfs(node, target, visited_nodes):
                 return True
-            
-    return False        
+
+    return False
+
+
+def bfs(root: Node, target: Node, visited_nodes: dict):
+
+    queue = Queue()
+    visited_nodes[root] = True
+    queue.put(root)
+
+    while not queue.empty():
+        node = queue.get()
+
+        if node == target:
+            return True
+
+        for adjacent_node in node.adjacent_nodes:
+            if not adjacent_node in visited_nodes:
+                visited_nodes[adjacent_node] = True
+                queue.put(adjacent_node)
+
+    return False
+
+
+
+
 
 
 
@@ -89,4 +113,4 @@ print_adjacency_list(graph)
 while 1:
     i1 = int(input("Enter root index: "))
     i2 = int(input("Enter target index: "))
-    print(f"Route Found: {dfs(graph[i1], graph[i2], {})}")
+    print(f"Route Found: {bfs(graph[i1], graph[i2], {})}")
