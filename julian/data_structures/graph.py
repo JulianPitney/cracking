@@ -43,6 +43,15 @@ def gen_directed_graph(size=10):
 
     return nodes
 
+
+def gen_sorted_integer_list(size=10):
+
+    integers = [randint(0, 2**8) for _ in range(0, size)]
+    integers.sort()
+    return integers
+
+
+
 def find_index_from_id(graph, nodeID):
 
     for i, node in enumerate(graph):
@@ -101,16 +110,32 @@ def bfs(root: Node, target: Node, visited_nodes: dict):
 
     return False
 
+def gen_bst(sorted_input_list: list):
+    
+    bst = None
+
+    for x in list:
+        node = Node(x):
 
 
 
+def four_point_one():
+
+    graph = gen_directed_graph(size=10)
+    print_adjacency_list(graph)
+
+    while 1:
+        i1 = int(input("Enter root index: "))
+        i2 = int(input("Enter target index: "))
+        print(f"BFS Route Found: {bfs(graph[i1], graph[i2], {})}")
+        print(f"DFS Route Found: {dfs(graph[i1], graph[i2], {})}")
+
+
+def four_point_two():
+    integers = gen_sorted_integer_list()
+    print(integers)
 
 
 
-graph = gen_directed_graph(size=10)
-print_adjacency_list(graph)
-
-while 1:
-    i1 = int(input("Enter root index: "))
-    i2 = int(input("Enter target index: "))
-    print(f"Route Found: {bfs(graph[i1], graph[i2], {})}")
+#four_point_one()
+four_point_two()
