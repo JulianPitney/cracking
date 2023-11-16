@@ -8,6 +8,13 @@ class Node:
         self.data = data
         self.adjacent_nodes = []
 
+class BSTNode (Node):
+
+    def __init__(self, data):
+        super().__init__(data)
+        self.left  = None
+        self.right = None
+
 
 def gen_directed_graph(size=10):
 
@@ -111,11 +118,17 @@ def bfs(root: Node, target: Node, visited_nodes: dict):
     return False
 
 def gen_bst(sorted_input_list: list):
-    
-    bst = None
 
-    for x in list:
-        node = Node(x):
+    if not sorted_input_list:
+        return None
+
+    middle_index = len(sorted_input_list) // 2
+    root = BSTNode(sorted_input_list[middle_index])
+
+    root.left = gen_bst(sorted_input_list[:middle_index])
+    root.right = gen_bst(sorted_input_list[middle_index + 1:])
+    return root
+
 
 
 
@@ -134,6 +147,7 @@ def four_point_one():
 def four_point_two():
     integers = gen_sorted_integer_list()
     print(integers)
+    bst = gen_bst(integers)
 
 
 
