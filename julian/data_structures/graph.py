@@ -150,6 +150,10 @@ def four_point_two():
     bst = gen_bst(integers)
 
 
+def four_point_three():
+    pass
 
 #four_point_one()
-four_point_two()
+#four_point_two()
+four_point_three()
+':?'
