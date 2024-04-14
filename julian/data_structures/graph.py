@@ -1,5 +1,6 @@
 from random import randint
 from queue import Queue
+from dataclasses import dataclass
 
 class Node:
 
@@ -150,10 +151,62 @@ def four_point_two():
     bst = gen_bst(integers)
 
 
-def four_point_three():
-    pass
+# Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth.
+# e.g if you have a tree with depth D, you'll have D linked lists.
+def four_point_three(root_node: BSTNode = None):
+    
+
+    # List of node lists
+    linked_lists = [[]]
+    # Queue for level order traversal
+    traversal_queue = []
+
+    # Wrapper to attach depth information to nodes
+    class DepthInfoNode:
+
+        def __init__(self, node: BSTNode, depth: int):
+            self.node = node
+            self.depth = depth
+
+    root_node = DepthInfoNode(root_node, 0)
+    traversal_queue.append(root_node)
+
+    while traversal_queue:
+
+        node = traversal_queue.pop(0)
+
+        
+        # If no list exists yet for this depth, create it.
+        if node.depth > len(linked_lists) - 1:
+            linked_lists.append([])
+
+        linked_lists[node.depth].append(node.node.data)
+
+        # Wrap left and right child nodes and enqueue them.
+        if node.node.left is not None:
+            left_node = DepthInfoNode(node.node.left, node.depth + 1)
+            traversal_queue.append(left_node)
+        if node.node.right is not None:
+            right_node = DepthInfoNode(node.node.right, node.depth + 1)
+            traversal_queue.append(right_node)
+
+
+    return linked_lists
+# 1. Traverse entire BST 1 level at a time 
+#     - level order traversal using queue 
+# 2. Wrap nodes in struct that holds 
+# 2. For each node, add to linked list at index equal to depth of node
+# 3. If linked list at index does not exist, create it
+# 4. Error handling
+# 5. Unit testing
+# 6. Docstring
 
 #four_point_one()
 #four_point_two()
-four_point_three()
-':?'
+
+integers = gen_sorted_integer_list()
+print(integers)
+root_node = gen_bst(integers)
+linked_lists = four_point_three(root_node)
+for l in linked_lists:
+    print(l)
