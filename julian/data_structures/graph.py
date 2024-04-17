@@ -153,7 +153,7 @@ def four_point_two():
 
 # Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth.
 # e.g if you have a tree with depth D, you'll have D linked lists.
-def four_point_three(root_node: BSTNode = None):
+def gen_ll_from_btree_level_order(root_node: BSTNode = None):
     
 
     # List of node lists
@@ -201,12 +201,70 @@ def four_point_three(root_node: BSTNode = None):
 # 5. Unit testing
 # 6. Docstring
 
+def four_point_three():
+    integers = gen_sorted_integer_list()
+    print(integers)
+    root_node = gen_bst(integers)
+    linked_lists = gen_ll_from_btree_level_order(root_node)
+    for l in linked_lists:
+        print(l)
+
+
+def get_subtree_height(node: BSTNode):
+    
+    if node is None:
+        return 0
+    
+    lh = get_subtree_height(node.left)
+    rh = get_subtree_height(node.right)
+    return max(lh, rh) + 1
+
+    
+        
+
+def is_balanced(node: BSTNode):
+
+    if node is None:
+        return True
+    
+    balanced = abs(get_subtree_height(node.left) - get_subtree_height(node.right)) <= 1
+    left_balanced = is_balanced(node.left)
+    right_balanced = is_balanced(node.right)
+
+    return (balanced and left_balanced and right_balanced)
+    
+    
+
+    
+
+
+
+
+
+# 1. Write a function to calculate the height of any subtree
+# 2. Recursively visit every node.
+# 3. For every node -> if (height(left_subtree) - height(right_subtree)) > 1: return false
+# 
+#        *
+#       / \
+#      /   \ 
+#     *     *   
+#    / \   / \
+#   *   * *   * 
+# Implement a function to check if a binary tree is balanced. 
+# For the purposes of this question a balanced tree is defined 
+# to be a tree such that the heights of the two subtress of any 
+# node never differ by more than one.
+def four_point_four():
+    root_node = gen_bst([1,2,3])
+    root_node.left.left = BSTNode(0)
+    balanced = is_balanced(root_node)
+    print(balanced)
+    return balanced
+    
+
+
 #four_point_one()
 #four_point_two()
-
-integers = gen_sorted_integer_list()
-print(integers)
-root_node = gen_bst(integers)
-linked_lists = four_point_three(root_node)
-for l in linked_lists:
-    print(l)
+#four_point_three()
+four_point_four()
