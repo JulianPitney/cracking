@@ -9,7 +9,7 @@ class Node:
         self.data = data
         self.adjacent_nodes = []
 
-class BSTNode (Node):
+class BTNode (Node):
 
     def __init__(self, data):
         super().__init__(data)
@@ -124,7 +124,7 @@ def gen_bst(sorted_input_list: list):
         return None
 
     middle_index = len(sorted_input_list) // 2
-    root = BSTNode(sorted_input_list[middle_index])
+    root = BTNode(sorted_input_list[middle_index])
 
     root.left = gen_bst(sorted_input_list[:middle_index])
     root.right = gen_bst(sorted_input_list[middle_index + 1:])
@@ -153,7 +153,7 @@ def four_point_two():
 
 # Given a binary tree, design an algorithm which creates a linked list of all the nodes at each depth.
 # e.g if you have a tree with depth D, you'll have D linked lists.
-def gen_ll_from_btree_level_order(root_node: BSTNode = None):
+def gen_ll_from_btree_level_order(root_node: BTNode = None):
     
 
     # List of node lists
@@ -164,7 +164,7 @@ def gen_ll_from_btree_level_order(root_node: BSTNode = None):
     # Wrapper to attach depth information to nodes
     class DepthInfoNode:
 
-        def __init__(self, node: BSTNode, depth: int):
+        def __init__(self, node: BTNode, depth: int):
             self.node = node
             self.depth = depth
 
@@ -210,7 +210,7 @@ def four_point_three():
         print(l)
 
 
-def get_subtree_height(node: BSTNode):
+def get_subtree_height(node: BTNode):
     
     if node is None:
         return 0
@@ -222,7 +222,7 @@ def get_subtree_height(node: BSTNode):
     
         
 
-def is_balanced(node: BSTNode):
+def is_balanced(node: BTNode):
 
     if node is None:
         return True
@@ -235,7 +235,24 @@ def is_balanced(node: BSTNode):
     
     
 
+def is_bst(root_node: BTNode) -> bool:
+
+    if root_node is None:
+        return True
     
+    if root_node.left is not None:
+        if root_node.left.data >= root_node.data:
+            return False
+        
+    if root_node.right is not None:
+        if root_node.right.data < root_node.data:
+            return False 
+        
+    
+    left_result = is_bst(root_node.left)
+    right_result = is_bst(root_node.right)
+    
+    return left_result and right_result    
 
 
 
@@ -257,7 +274,7 @@ def is_balanced(node: BSTNode):
 # node never differ by more than one.
 def four_point_four():
     root_node = gen_bst([1,2,3])
-    root_node.left.left = BSTNode(0)
+    root_node.left.left = BTNode(0)
     balanced = is_balanced(root_node)
     print(balanced)
     return balanced
@@ -265,7 +282,26 @@ def four_point_four():
 
 # Implement a fuction to check if a binary tree is a binary search tree.
 def four_point_five():
-    pass 
+    # 1. A BT is a BST if for the value of every node, the left child's value is less and the right child's value is greater than or equal to. 
+    # 2. Traverse the entire tree using dfs or bfs
+    # 3. Check this condition for every node. Return false if the check ever fails.  
+
+    integers = gen_sorted_integer_list()
+    print(integers)
+    bst_root_node = gen_bst(integers)
+    bt_root_node = BTNode(0)
+    bt_root_node.left = BTNode(-5)
+    bt_root_node.right = BTNode(11)
+    bt_root_node.left.right = BTNode(-2)
+    bt_root_node.left.left = BTNode(15) # failure case
+    bt_root_node.right.right = BTNode(57)
+    bt_root_node.right.left = BTNode(6)
+
+    # should be true
+    print(is_bst(bst_root_node))
+    # should be false
+    print(is_bst(bt_root_node))
+
 
 # Write an algorithm to find the "next" node (i.e., in-order successor) of a given
 # node in a binary search tree. You may assume that each node has a link to it's parent.
@@ -306,7 +342,12 @@ def four_point_eleven():
 # or end at the root or a leaf, but it must go downwards (traveling) only from parents nodes to child nodes. 
 def four_point_twelve():
     pass 
+
+
+
+
 #four_point_one()
 #four_point_two()
 #four_point_three()
-four_point_four()
+#four_point_four()
+four_point_five()
