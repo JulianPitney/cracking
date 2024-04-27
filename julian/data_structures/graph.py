@@ -15,8 +15,20 @@ class BTNode (Node):
         super().__init__(data)
         self.left  = None
         self.right = None
+        self.parent = None
 
+    def __repr__(self):
 
+        output = f"ID: {id(self)}\nParent: {id(self.parent)}\nLeft: {id(self.left)}\nRight: {id(self.right)}\nData: {self.data}\n"
+    
+        if self.left is not None:
+            output += f"Left Data: {self.left.data}\n"
+        if self.right is not None:
+            output += f"Right Data: {self.right.data}\n"
+
+        output = output.replace(str(id(None)), "None")
+        return output
+    
 def gen_directed_graph(size=10):
 
     # gen some nodes
@@ -130,6 +142,25 @@ def gen_bst(sorted_input_list: list):
     root.right = gen_bst(sorted_input_list[middle_index + 1:])
     return root
 
+
+
+def gen_bst_with_parent_links(sorted_input_list: list):
+
+    if not sorted_input_list:
+        return None
+
+    middle_index = len(sorted_input_list) // 2
+    root = BTNode(sorted_input_list[middle_index])
+
+    root.left = gen_bst_with_parent_links(sorted_input_list[:middle_index])
+    root.right = gen_bst_with_parent_links(sorted_input_list[middle_index + 1:])
+
+    if root.left is not None:
+        root.left.parent = root 
+    if root.right is not None:
+        root.right.parent = root 
+
+    return root
 
 
 
@@ -303,10 +334,67 @@ def four_point_five():
     print(is_bst(bt_root_node))
 
 
+
+
+def print_btree(root_node: BTNode):
+
+    if root_node is None:
+        return None
+    
+
+    print(root_node)
+    print_btree(root_node.left)
+    print_btree(root_node.right)
+
+    return None
+
+
+
+
+def get_in_order_successor(node: BTNode) -> BTNode:
+
+    if node.right is None:
+        if node.parent is None:
+            return None
+        else:
+            if node.parent.left is node:
+                return node.parent    
+            elif node.parent.parent is not None and node.parent.parent.left is node.parent:
+                return node.parent.parent 
+            else:
+                return None
+    else:
+        node = node.right
+        while node.left is not None:
+            node = node.left
+        return node 
+
+
+def test_in_order_successor_with_dft(root_node: BTNode):
+
+    if root_node is None:
+        return None
+    
+    print("\n\n\nNode: \n")
+    print(root_node)
+    print("Successor: \n")
+    print(get_in_order_successor(root_node))
+    print("\n\n\n")
+    test_in_order_successor_with_dft(root_node.left)
+    test_in_order_successor_with_dft(root_node.right)
+
 # Write an algorithm to find the "next" node (i.e., in-order successor) of a given
 # node in a binary search tree. You may assume that each node has a link to it's parent.
 def four_point_six():
-    pass 
+    integers = gen_sorted_integer_list()
+    print(integers)
+    bst_root_node = gen_bst_with_parent_links(integers)
+    print_btree(bst_root_node)
+    print("------------------------------------------------------------------------------------------")
+    test_in_order_successor_with_dft(bst_root_node)
+    
+
+
 
 # You are given a list of projects and a list of dependencies (which is a list of pairs of projects, where the second project is dependent
 # on the first project). All of a project's dependencies must be built before the project is. Find a build order that will allow the projects to 
@@ -350,4 +438,6 @@ def four_point_twelve():
 #four_point_two()
 #four_point_three()
 #four_point_four()
-four_point_five()
+#four_point_five()
+four_point_six()
+print
