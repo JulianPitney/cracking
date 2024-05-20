@@ -395,12 +395,69 @@ def four_point_six():
     
 
 
+# Note: Because we're just randomly generating dependency pairs from a population of modules,
+# it's likely that when we go to generate the depdency graph 
+# to represent these relationships; multiple, disconnected graphs will be required. 
+def gen_dependency_pairs_list(size = 10) -> list:
+
+    # create a bunch of modules
+    modules = []
+    for _ in range(0, size):
+            modules.append(Node(randint(0, 100)))
+
+
+    # make up some direct dependencies between a bunch of them
+    import random
+    direct_dependencies = []
+    while len(direct_dependencies) < (len(modules) // 2):
+        pair = random.sample(modules, 2)
+        direct_dependencies.append((pair[0], pair[1]))
+    
+
+    return direct_dependencies
+
+# This function hooks up the module nodes by examining all the pairs 
+# and setting their adjacency lists accordingly. This
+# may or may not result in multiple, disconnected depdency graphs.
+# Because we'd like to just return a single root node that represents
+# the dependency realtionship between all nodes, we'll invent a root 
+# node and make every distinct graph a dependency of this root node.
+# 
+def gen_dependency_graph(dependencies: list) -> Node:
+
+    root_node = Node(-1)
+
+    # Connect all the module nodes to create the dependency graph(s)
+    for pair in dependencies:
+        pair[1].adjacent_nodes.append(pair[0])
+
+    # Add every distinct, disconnected graph to the adjacency list of the root node.
+    ...
+
+
+    return root_node
 
 # You are given a list of projects and a list of dependencies (which is a list of pairs of projects, where the second project is dependent
 # on the first project). All of a project's dependencies must be built before the project is. Find a build order that will allow the projects to 
 # be built. If there is no valid build order, return an error.
 def four_point_seven():
-    pass 
+
+    dependency_pairs = gen_dependency_pairs_list()
+    dependency_graph = gen_dependency_graph(dependency_pairs)
+
+    # perform topological sort on dependency graph to get a valid dependency ordering. These should raise an exception if there is no valid build order.
+    # build_order = dfs(dependency_graph)
+    # build_order = bfs(dependency_graph)
+    # build_order = khans_algorithm(dependency_graph)
+
+
+    # 1. Create a dependency graph using the projects dependency list as input.
+    #       - The input list is essentially an adjacency list so the graph can be  constructed directly from this.
+    # 2. Perform topological sort on the graph and return the topologically sorted nodes. 
+    #       - 
+    ... 
+
+
 
 # Design an algorithm and write code to find the first common acestor of two nodes in a binary tree.
 # Avoid storing additional nodes in a data structure. NOTE: This is not necessarily a binary search tree. 
@@ -439,5 +496,6 @@ def four_point_twelve():
 #four_point_three()
 #four_point_four()
 #four_point_five()
-four_point_six()
-print
+#four_point_six()
+four_point_seven()
+gen_dependency_pairs_list()
